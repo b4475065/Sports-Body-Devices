@@ -1,0 +1,643 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>رحلة داخل الجسم الرياضي</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap">
+<style>
+/* Layout: one-column "lab notebook" with sticky tab strip; each system gets a big clickable diagram + info panel */
+/* Layout: illustrated anatomy poster — peach paper, soft blobs behind flat organ illustrations, chunky display headings */
+:root{
+  --bg:#fde9df; --surface:#fff7f2; --ink:#3c2c48; --muted:#8a6874; --line:#f2cdbf;
+  --red:#d63a50; --red-soft:#f8cdc6; --coral:#ec7f72; --skin:#f4a999; --cream:#fff4ea;
+  --blue:#6c80d8; --blue-soft:#dfe3fb; --bone:#f3cf6e; --bone-ink:#a9822e; --muscle:#e25a66;
+  --ok:#2f9466; --bad:#c9372c;
+  --display:"Lalezar","IBM Plex Sans Arabic",system-ui,sans-serif;
+  --body:"IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#231b24; --surface:#2f2531; --ink:#fbebe4; --muted:#c7a9b0; --line:#4b3a48;
+  --red:#ff6578; --red-soft:#6a3a42; --coral:#ff8d7f; --skin:#a0605a; --cream:#f7e8da;
+  --blue:#9aa9ff; --blue-soft:#33375e; --bone:#eccb72; --bone-ink:#f3da98; --muscle:#ff7a86;
+  --ok:#55c891; --bad:#ff7d6e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#231b24; --surface:#2f2531; --ink:#fbebe4; --muted:#c7a9b0; --line:#4b3a48;
+  --red:#ff6578; --red-soft:#6a3a42; --coral:#ff8d7f; --skin:#a0605a; --cream:#f7e8da;
+  --blue:#9aa9ff; --blue-soft:#33375e; --bone:#eccb72; --bone-ink:#f3da98; --muscle:#ff7a86;
+  --ok:#55c891; --bad:#ff7d6e; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.75;direction:rtl}
+.wrap{max-width:1000px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:400;color:var(--red);line-height:1.3;text-wrap:balance;margin:0}
+h2{font-size:clamp(1.5rem,4vw,2rem)}
+h3{font-size:1.15rem}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+/* hero */
+.hero{padding-block:28px 18px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center}
+.hero svg{width:96px;height:96px}
+.beat{transform-origin:50% 55%;animation:beat 1s infinite}
+@keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.14)}24%{transform:scale(.98)}36%{transform:scale(1.07)}}
+.hero h1{font-size:clamp(2.2rem,8vw,3.4rem)}
+.hero p{color:var(--muted);margin-top:4px}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding-bottom:18px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.fact b{font-family:var(--display);font-size:1.35rem;display:block;font-variant-numeric:tabular-nums}
+.fact span{font-size:.85rem;color:var(--muted)}
+@media(max-width:640px){.hero{grid-template-columns:1fr}.hero svg{width:70px;height:70px}.facts{grid-template-columns:repeat(2,1fr)}}
+
+/* tabs */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+.tabs a{flex:0 0 auto;text-decoration:none;color:var(--ink);padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:500;font-size:.95rem}
+.tabs a[aria-current="true"]{background:var(--red);color:#fff;border-color:var(--red)}
+
+section{padding-block:26px 40px}
+.lead{color:var(--muted);margin-top:6px;max-width:65ch}
+.stage{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;margin-top:18px;align-items:start}
+@media(max-width:760px){.stage{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;min-width:0}
+.diagram svg{width:100%;height:auto;display:block}
+.hint{font-size:.85rem;color:var(--muted);text-align:center;margin-top:6px}
+.info h3{display:flex;gap:8px;align-items:center}
+.info .tag{font-family:var(--body);font-size:.75rem;font-weight:500;padding:2px 10px;border-radius:999px;background:var(--blue-soft);color:var(--blue)}
+.info p{margin-top:8px}
+.info .tip{margin-top:10px;font-size:.92rem;background:var(--bg);border-radius:10px;padding:8px 12px}
+
+.hot{cursor:pointer;transition:filter .2s,opacity .2s}
+.hot:hover{filter:brightness(1.12)}
+.hot.on{filter:drop-shadow(0 0 5px var(--ink))}
+#flex{direction:ltr}
+svg{direction:ltr}
+svg text{font-family:var(--body);fill:var(--ink);pointer-events:none}
+.hot text{pointer-events:auto}
+.lead-line{stroke:var(--muted);stroke-width:1.2;fill:none}
+.deco{pointer-events:none}
+
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btn{border:1px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:10px;font-weight:500}
+.btn.primary{background:var(--red);border-color:var(--red);color:#fff}
+.btn.alt{background:var(--blue);border-color:var(--blue);color:#fff}
+
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+@media(max-width:700px){.grid3,.grid2{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}
+.card h3{margin-bottom:6px}
+.card ul{margin:6px 0 0;padding-right:18px}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;margin-left:6px;vertical-align:middle}
+
+.tablewrap{overflow-x:auto;margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:.95rem}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}
+th{font-family:var(--display);font-weight:500;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+
+.formula{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;font-weight:700;margin-top:10px;font-variant-numeric:tabular-nums}
+.formula .val{font-family:var(--display);font-size:1.6rem;color:var(--red)}
+input[type=range]{width:100%;accent-color:var(--red)}
+.caption{min-height:3.5em;margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--bg);font-weight:500}
+
+/* breathing */
+.lung{transform-origin:170px 210px;transition:transform 1.6s ease-in-out}
+.inhale .lung{transform:scale(1.08)}
+.diaphragm{transition:d 1.6s ease-in-out,transform 1.6s ease-in-out}
+.inhale .diaphragm{transform:translateY(16px)}
+
+/* arm */
+#forearm,#biceps,#triceps{transition:transform .25s,opacity .25s}
+
+/* games */
+.game{margin-top:18px}
+.game h3{font-size:1.3rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{border:1px solid var(--line);background:var(--surface);padding:8px 12px;border-radius:999px;font-weight:500}
+.chip.done{background:var(--ok);border-color:var(--ok);color:#fff;opacity:.85;cursor:default}
+.chip.shake{animation:shake .35s;border-color:var(--bad)}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.path{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:44px;margin-top:12px;padding:10px;border:1px dashed var(--line);border-radius:12px}
+.path span{background:var(--red-soft);color:var(--red);padding:4px 10px;border-radius:999px;font-size:.9rem;font-weight:500}
+.path i{font-style:normal;color:var(--muted)}
+.big-item{font-family:var(--display);font-size:1.5rem;text-align:center;padding:18px;border-radius:12px;background:var(--bg);margin-top:12px}
+.bins{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.bins .btn{padding:12px}
+.score{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.9rem}
+.opts{display:grid;gap:8px;margin-top:12px}
+.opt{text-align:right;border:1px solid var(--line);background:var(--surface);padding:10px 14px;border-radius:10px}
+.opt.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 15%,var(--surface))}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 15%,var(--surface))}
+.explain{margin-top:10px;font-size:.95rem;color:var(--muted)}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:8px}
+.bar div{height:100%;background:var(--red);transition:width .3s}
+.flash{font-weight:700;margin-top:8px;min-height:1.6em}
+.flash.ok{color:var(--ok)} .flash.no{color:var(--bad)}
+.credits{text-align:center;padding-block:28px 36px;border-top:2px dashed var(--line);color:var(--muted);font-size:.92rem}
+.credits h2{font-size:1.6rem;margin-bottom:12px}
+.team{display:flex;justify-content:center;flex-wrap:wrap;gap:18px;margin-bottom:14px}
+.member{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--ink);font-size:.85rem}
+.credits p{margin-top:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="wrap hero">
+  <svg viewBox="0 0 100 100" aria-hidden="true"><path class="beat" d="M50 88 C20 66 6 50 6 32 C6 18 17 8 30 8 C39 8 46 13 50 20 C54 13 61 8 70 8 C83 8 94 18 94 32 C94 50 80 66 50 88Z" fill="var(--red)"/><path d="M14 48 h20 l6 -12 l8 26 l7 -18 l4 4 h28" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div>
+    <h1>رحلة داخل الجسم الرياضي</h1>
+    <p>الجهاز القلبي التنفسي والجهاز الهيكلي العضلي: اضغطي على الرسومات، جرّبي، والعبي.</p>
+  </div>
+</header>
+<div class="wrap facts">
+  <div class="fact"><b>~100,000</b><span>نبضة قلب في اليوم</span></div>
+  <div class="fact"><b>~20,000</b><span>نَفَس في اليوم</span></div>
+  <div class="fact"><b>206</b><span>عظمة عند البالغ</span></div>
+  <div class="fact"><b>+600</b><span>عضلة في الجسم</span></div>
+</div>
+
+<nav><div class="wrap tabs" role="tablist">
+  <a href="#heart" data-tab="heart">❤ القلب والدم</a>
+  <a href="#lungs" data-tab="lungs">التنفس</a>
+  <a href="#bones" data-tab="bones">العظام</a>
+  <a href="#muscles" data-tab="muscles">العضلات</a>
+  <a href="#play" data-tab="play">🎮 العب واختبر</a>
+</div></nav>
+
+<main class="wrap">
+
+<!-- HEART -->
+<section id="v-heart">
+  <h2>القلب: مضخة من أربع غرف</h2>
+  <p class="lead">القلب عضلة بحجم قبضة اليد تقريبًا، فيه أذينان فوق (يستقبلان الدم) وبطينان تحت (يضخّان الدم). الجهة اليمنى للدم <b style="color:var(--blue)">قليل الأكسجين</b> والجهة اليسرى للدم <b style="color:var(--red)">الغني بالأكسجين</b>.</p>
+  <div class="stage">
+    <div class="panel diagram">
+      <svg viewBox="0 0 360 330" id="heartSvg" role="img" aria-label="رسم القلب">
+  <defs>
+    <marker id="ab" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--blue)"/></marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--red)"/></marker>
+  </defs>
+  <g class="deco">
+    <path d="M40 175 C30 90 130 30 200 55 C285 25 350 100 330 190 C315 275 235 325 160 312 C80 300 50 245 40 175Z" fill="var(--bg)"/>
+    <path d="M0 300 H34 l8 -16 l10 30 l8 -22 l6 8 H84" fill="none" stroke="var(--blue)" stroke-width="2"/>
+    <path d="M276 300 H300 l8 -16 l10 30 l8 -22 l6 8 H360" fill="none" stroke="var(--blue)" stroke-width="2"/>
+  </g>
+  <g class="hot" data-h="ra"><path d="M155 168 C122 160 104 186 110 212 C116 236 140 242 158 230 L163 190 Z" fill="var(--coral)" stroke="var(--surface)" stroke-width="2"/><path class="lead-line" d="M100 192 H112"/><text x="58" y="196" text-anchor="middle" font-size="12" font-weight="700">الأذين الأيمن</text></g>
+  <g class="hot" data-h="rv"><path d="M158 230 C142 240 128 238 120 232 C128 264 168 296 222 312 C214 272 210 232 206 198 L163 190 Z" fill="var(--coral)" stroke="var(--surface)" stroke-width="2"/><path class="lead-line" d="M100 264 L142 262"/><text x="58" y="268" text-anchor="middle" font-size="12" font-weight="700">البطين الأيمن</text></g>
+  <g class="hot" data-h="lv"><path d="M206 198 L262 196 L268 180 C294 218 282 282 222 312 C214 272 210 232 206 198Z" fill="var(--red)" stroke="var(--surface)" stroke-width="2"/><path class="lead-line" d="M272 264 L262 262"/><text x="314" y="268" text-anchor="middle" font-size="12" font-weight="700">البطين الأيسر</text></g>
+  <g class="hot" data-h="ao"><path d="M182 175 V100 C182 55 248 55 248 100 V140" fill="none" stroke="var(--red)" stroke-width="28" stroke-linecap="round"/><path d="M196 74 V34 M215 68 V28 M234 74 V36" stroke="var(--red)" stroke-width="9" stroke-linecap="round"/><path class="lead-line" d="M290 36 L244 52"/><text x="312" y="40" text-anchor="middle" font-size="13" font-weight="700">الأبهر</text></g>
+  <g class="hot" data-h="la"><path d="M230 156 C244 144 270 150 270 178 L262 197 L228 194 Z" fill="var(--red)" stroke="var(--surface)" stroke-width="2"/><path class="lead-line" d="M276 152 L264 160"/><text x="314" y="152" text-anchor="middle" font-size="12" font-weight="700">الأذين الأيسر</text></g>
+  <g class="hot" data-h="pa"><path d="M220 140 C200 136 160 134 102 134" fill="none" stroke="var(--blue)" stroke-width="14" stroke-linecap="round"/><path d="M226 138 H266" fill="none" stroke="var(--blue)" stroke-width="14" stroke-linecap="round"/><path d="M205 202 C204 170 210 150 226 138" fill="none" stroke="var(--blue)" stroke-width="24" stroke-linecap="round"/><text x="58" y="124" text-anchor="middle" font-size="12" font-weight="700">الشريان الرئوي</text></g>
+  <g class="hot" data-h="vc"><rect x="128" y="40" width="24" height="135" rx="11" fill="var(--blue)"/><rect x="112" y="222" width="20" height="58" rx="10" fill="var(--blue)"/><path class="lead-line" d="M100 60 H128"/><text x="58" y="64" text-anchor="middle" font-size="12" font-weight="700">الوريد الأجوف</text></g>
+  <g class="hot" data-h="pv"><path d="M268 170 H302 M268 188 H302" stroke="var(--red)" stroke-width="11" stroke-linecap="round"/><text x="312" y="216" text-anchor="middle" font-size="12" font-weight="700">الأوردة الرئوية</text></g>
+  <path class="deco" d="M206 205 C210 240 214 270 220 300 M232 202 C250 216 258 240 255 262 M175 236 C185 250 198 262 210 268 M246 228 L266 236" fill="none" stroke="var(--cream)" stroke-width="2.5" stroke-linecap="round" opacity=".75"/>
+  <g class="hot" data-h="valves" fill="var(--cream)" stroke="var(--bone-ink)" stroke-width="1.5"><ellipse cx="182" cy="180" rx="9" ry="5"/><ellipse cx="205" cy="200" rx="9" ry="5"/><ellipse cx="152" cy="232" rx="10" ry="5"/><ellipse cx="248" cy="197" rx="10" ry="5"/></g>
+</svg>
+      <p class="hint">اضغطي على أي جزء (حتى الأسماء) • الرسم كأنك تنظرين لشخص قدامك، فيمينه على يسارك. الصمامات هي الأشكال الكريمية الصغيرة.</p>
+    </div>
+    <div class="panel info" id="heartInfo" aria-live="polite"></div>
+  </div>
+
+  <div class="panel" style="margin-top:16px">
+    <h3>🩸 شغّلي رحلة الدم</h3>
+    <p class="lead" style="margin-top:4px">الدم يمر بالقلب مرتين في كل دورة: دورة صغرى (رئوية) ودورة كبرى (جهازية).</p>
+    <div class="row"><button class="btn primary" id="tourBtn">ابدئي الرحلة ▶</button><button class="btn" id="tourStep">الخطوة التالية</button></div>
+    <div class="caption" id="tourCap">اضغطي "ابدئي الرحلة" وشوفي الأجزاء تضيء بالترتيب.</div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>الدورة الدموية الصغرى (الرئوية)</h3>
+      <p>البطين الأيمن ← الشريان الرئوي ← الرئتان (يأخذ الدم O₂ ويتخلص من CO₂) ← الأوردة الرئوية ← الأذين الأيسر.</p>
+    </div>
+    <div class="card">
+      <h3>الدورة الدموية الكبرى (الجهازية)</h3>
+      <p>البطين الأيسر ← الأبهر ← الشرايين ← الشعيرات في أنسجة الجسم ← الأوردة ← الوريد الأجوف ← الأذين الأيمن.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:26px">الأوعية الدموية الثلاثة</h3>
+  <div class="tablewrap"><table>
+    <tr><th>الصفة</th><th>الشرايين</th><th>الأوردة</th><th>الشعيرات الدموية</th></tr>
+    <tr><td>الاتجاه</td><td>تنقل الدم <b>من</b> القلب</td><td>تنقل الدم <b>إلى</b> القلب</td><td>تربط الشرايين بالأوردة</td></tr>
+    <tr><td>الجدار</td><td>سميك ومرن وعضلي</td><td>أرق من الشرايين</td><td>طبقة خلية واحدة فقط</td></tr>
+    <tr><td>الضغط</td><td>عالٍ</td><td>منخفض</td><td>منخفض جدًا</td></tr>
+    <tr><td>الصمامات</td><td>لا يوجد (إلا عند مخرج القلب)</td><td>يوجد، تمنع رجوع الدم</td><td>لا يوجد</td></tr>
+    <tr><td>الوظيفة المميزة</td><td>تحمل دمًا مؤكسجًا غالبًا*</td><td>تحمل دمًا غير مؤكسج غالبًا*</td><td>مكان تبادل الغازات والغذاء</td></tr>
+  </table></div>
+  <p class="hint" style="text-align:right">* الاستثناء: الشريان الرئوي يحمل دمًا غير مؤكسج، والأوردة الرئوية تحمل دمًا مؤكسجًا.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>مكونات الدم</h3>
+      <ul>
+        <li><span class="sw" style="background:var(--red)"></span><b>كريات الدم الحمراء:</b> تنقل O₂ بواسطة الهيموغلوبين.</li>
+        <li><span class="sw" style="background:var(--bone)"></span><b>كريات الدم البيضاء:</b> تدافع عن الجسم ضد الجراثيم.</li>
+        <li><span class="sw" style="background:var(--muscle)"></span><b>الصفائح الدموية:</b> تساعد في تخثر الدم ووقف النزيف.</li>
+        <li><span class="sw" style="background:var(--blue-soft);border:1px solid var(--blue)"></span><b>البلازما:</b> سائل أصفر يحمل الغذاء والهرمونات والفضلات.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>جرّبي: النتاج القلبي</h3>
+      <p>كمية الدم التي يضخها القلب في الدقيقة. حجم الضربة ثابت هنا = 70 مل.</p>
+      <label for="hr" style="display:block;margin-top:8px">معدل النبض: <b id="hrVal">72</b> نبضة/دقيقة</label>
+      <input type="range" id="hr" min="50" max="180" value="72">
+      <div class="formula">النتاج القلبي = النبض × حجم الضربة = <span class="val" id="co">5.0</span> لتر/دقيقة</div>
+      <p class="hint" id="hrNote"></p>
+    </div>
+  </div>
+</section>
+
+<!-- LUNGS -->
+<section id="v-lungs" hidden>
+  <h2>الجهاز التنفسي: مسار الهواء</h2>
+  <p class="lead">وظيفته إدخال الأكسجين O₂ للدم وإخراج ثاني أكسيد الكربون CO₂. يتعاون مع القلب، لذلك نسميهما معًا "الجهاز القلبي التنفسي".</p>
+  <div class="stage">
+    <div class="panel diagram" id="lungWrap">
+      <svg viewBox="0 0 340 330" role="img" aria-label="رسم الجهاز التنفسي">
+  <defs><clipPath id="clipL"><path d="M152 125 C118 108 76 140 66 200 C56 252 66 290 98 292 C128 294 150 280 155 258 Z"/></clipPath><clipPath id="clipR"><path d="M188 125 C222 108 264 140 274 200 C284 252 274 290 242 292 C218 294 200 284 196 266 C206 254 212 238 200 226 Z"/></clipPath></defs>
+  <path class="deco" d="M30 170 C20 80 120 20 190 40 C280 20 330 110 320 190 C310 280 220 320 150 310 C70 300 40 250 30 170Z" fill="var(--bg)"/>
+  <g class="lung">
+    <g class="hot" data-l="lungs">
+      <path d="M152 125 C118 108 76 140 66 200 C56 252 66 290 98 292 C128 294 150 280 155 258 Z" fill="var(--coral)"/><path d="M50 252 Q80 240 110 254 T170 248 V300 H50Z" fill="var(--blue)" opacity=".85" clip-path="url(#clipL)"/>
+      <path d="M188 125 C222 108 264 140 274 200 C284 252 274 290 242 292 C218 294 200 284 196 266 C206 254 212 238 200 226 Z" fill="var(--coral)"/><path d="M180 248 Q210 240 240 254 T290 248 V300 H180Z" fill="var(--blue)" opacity=".85" clip-path="url(#clipR)"/>
+      <path d="M78 186 C104 182 128 188 148 198 M92 236 L150 218 M206 206 C232 210 254 220 270 238" fill="none" stroke="var(--red-soft)" stroke-width="2"/>
+      <text x="100" y="275" text-anchor="middle" font-size="11" font-weight="700">الرئة اليمنى</text>
+      <text x="240" y="275" text-anchor="middle" font-size="11" font-weight="700">الرئة اليسرى</text>
+    </g>
+    <g class="hot" data-l="bronchi" fill="none" stroke="var(--red-soft)" stroke-linecap="round">
+      <path d="M170 128 L152 150 M170 128 L188 150" stroke-width="10"/>
+      <path d="M152 150 L130 175 L108 205 M130 175 L125 230 M108 205 L90 240 M108 205 L112 262 M188 150 L210 175 L232 205 M210 175 L215 230 M232 205 L250 240 M232 205 L228 262" stroke-width="4"/>
+      <path class="lead-line" d="M114 106 L150 146" stroke-width="1.2"/><text x="66" y="110" text-anchor="middle" font-size="12" font-weight="700" stroke="none">الشعب الهوائية</text>
+    </g>
+  </g>
+  <g class="hot" data-l="larynx"><rect x="158" y="24" width="24" height="26" rx="9" fill="var(--muscle)"/><path class="lead-line" d="M112 36 H156"/><text x="70" y="40" text-anchor="middle" font-size="12" font-weight="700">الحنجرة</text></g>
+  <g class="hot" data-l="trachea"><rect x="162" y="48" width="16" height="84" rx="6" fill="var(--red-soft)"/><path d="M162 58h16M162 68h16M162 78h16M162 88h16M162 98h16M162 108h16M162 118h16" stroke="var(--coral)" stroke-width="2.5"/><path class="lead-line" d="M120 76 H160"/><text x="66" y="80" text-anchor="middle" font-size="12" font-weight="700">القصبة الهوائية</text></g>
+  <g class="hot" data-l="alveoli">
+    <path class="lead-line" d="M262 92 L232 205" stroke-dasharray="3 3"/>
+    <circle cx="285" cy="60" r="40" fill="var(--surface)" stroke="var(--coral)" stroke-width="2"/>
+    <path d="M285 98 V82" stroke="var(--red-soft)" stroke-width="5" stroke-linecap="round"/>
+    <g fill="var(--coral)" stroke="var(--surface)" stroke-width="1.5"><circle cx="275" cy="52" r="10"/><circle cx="293" cy="47" r="10"/><circle cx="302" cy="63" r="10"/><circle cx="284" cy="69" r="10"/><circle cx="268" cy="68" r="8"/><circle cx="294" cy="78" r="7"/></g>
+    <path d="M262 40 C280 30 300 34 312 50 M260 80 C275 90 300 92 314 74" fill="none" stroke="var(--blue)" stroke-width="2"/>
+    <text x="285" y="118" text-anchor="middle" font-size="12" font-weight="700">الحويصلات الهوائية</text>
+  </g>
+  <g class="hot" data-l="diaphragm"><path class="diaphragm" d="M40 302 Q170 262 300 302" fill="none" stroke="var(--muscle)" stroke-width="9" stroke-linecap="round"/><text x="170" y="324" text-anchor="middle" font-size="12" font-weight="700">الحجاب الحاجز</text></g>
+</svg>
+<div class="row" style="justify-content:center;gap:4px;align-items:center;font-size:.9rem"><button class="chip hot" data-l="nose">الأنف</button><span>←</span><button class="chip hot" data-l="pharynx">البلعوم</button><span>←</span><button class="chip hot" data-l="larynx">الحنجرة</button><span>←</span><button class="chip hot" data-l="trachea">القصبة</button><span>←</span><button class="chip hot" data-l="bronchi">الشعب</button><span>←</span><button class="chip hot" data-l="alveoli">الحويصلات</button></div>
+      <div class="row" style="justify-content:center"><button class="btn alt" id="breathBtn">خذي نَفَس 🌬</button></div>
+      <div class="caption" id="breathCap">اضغطي الزر عشان تشوفين الشهيق والزفير.</div>
+    </div>
+    <div class="panel info" id="lungInfo" aria-live="polite"></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>🌬 الشهيق</h3>
+      <ul><li>الحجاب الحاجز <b>ينقبض وينزل لتحت</b>.</li><li>العضلات بين الضلوع ترفع القفص الصدري.</li><li>يكبر حجم الصدر ← يقل الضغط داخله.</li><li>يدخل الهواء للرئتين.</li></ul>
+    </div>
+    <div class="card">
+      <h3>💨 الزفير</h3>
+      <ul><li>الحجاب الحاجز <b>ينبسط ويرتفع لفوق</b> (شكل قبة).</li><li>القفص الصدري ينزل.</li><li>يصغر حجم الصدر ← يزيد الضغط.</li><li>يخرج الهواء من الرئتين.</li></ul>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:16px">
+    <h3>تبادل الغازات في الحويصلة الهوائية</h3>
+    <svg viewBox="0 0 400 170" style="width:100%;height:auto;margin-top:10px" role="img" aria-label="تبادل الغازات">
+      <circle cx="120" cy="85" r="62" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
+      <text x="120" y="80" text-anchor="middle" font-size="13" font-weight="700">حويصلة هوائية</text>
+      <text x="120" y="98" text-anchor="middle" font-size="11" style="fill:var(--muted)">(هواء)</text>
+      <rect x="215" y="20" width="40" height="130" rx="20" fill="var(--red-soft)" stroke="var(--red)" stroke-width="2"/>
+      <text x="320" y="80" text-anchor="middle" font-size="13" font-weight="700">شعيرة دموية</text>
+      <text x="320" y="98" text-anchor="middle" font-size="11" style="fill:var(--muted)">(دم)</text>
+      <path d="M180 60 H210" stroke="var(--red)" stroke-width="3" marker-end="url(#ar)"/>
+      <text x="195" y="52" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--red)">O₂</text>
+      <path d="M212 112 H182" stroke="var(--blue)" stroke-width="3" marker-end="url(#ab)"/>
+      <text x="195" y="132" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--blue)">CO₂</text>
+    </svg>
+    <p class="lead">يحدث التبادل بـ<b>الانتشار</b>: الغاز ينتقل من التركيز العالي إلى التركيز المنخفض. جدار الحويصلة والشعيرة رقيق جدًا (خلية واحدة)، وعدد الحويصلات بالملايين فتصير مساحة السطح كبيرة جدًا.</p>
+  </div>
+</section>
+
+<!-- BONES -->
+<section id="v-bones" hidden>
+  <h2>الجهاز الهيكلي: 206 عظمة</h2>
+  <p class="lead">الهيكل العظمي ينقسم إلى <b>هيكل محوري</b> (80 عظمة: الجمجمة، العمود الفقري، القفص الصدري) و<b>هيكل طرفي</b> (126 عظمة: الأطراف والحزامان الكتفي والحوضي).</p>
+  <div class="stage">
+    <div class="panel diagram" id="skelWrap">
+      <svg viewBox="0 0 360 330" id="skel" role="img" aria-label="عظام الظهر والكتفين">
+  <g class="deco">
+    <path d="M14 180 C0 70 110 4 185 14 C290 4 360 90 348 190 C336 280 250 330 165 322 C70 314 24 260 14 180Z" fill="var(--bg)"/>
+    <path d="M150 0 H210 V30 C226 44 262 50 292 60 C324 72 340 100 344 138 L350 330 H10 L16 138 C20 100 36 72 68 60 C98 50 134 44 150 30 Z" fill="var(--skin)"/>
+    <path d="M150 0 H210 V30 C200 40 160 40 150 30Z" fill="var(--coral)" opacity=".35"/>
+    <path d="M84 150 C86 210 88 270 90 330 M276 150 C274 210 272 270 270 330" fill="none" stroke="var(--coral)" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <g class="hot" data-b="humerus">
+    <g fill="var(--bone)" stroke="var(--bone-ink)" stroke-width="2">
+      <path d="M54 100 C50 160 46 240 42 330 H66 C66 240 68 160 74 104 Z"/><circle cx="66" cy="96" r="20"/>
+      <path d="M306 100 C310 160 314 240 318 330 H294 C294 240 292 160 286 104 Z"/><circle cx="294" cy="96" r="20"/>
+    </g>
+    <path d="M58 120 C56 180 54 250 52 320 M302 120 C304 180 306 250 308 320" stroke="var(--cream)" stroke-width="3" opacity=".7" fill="none" stroke-linecap="round"/>
+    <text x="40" y="300" text-anchor="middle" font-size="12" font-weight="700" style="paint-order:stroke;stroke:var(--surface);stroke-width:4">العضد</text>
+  </g>
+  <g class="hot" data-b="ribs"><path d="M170 74 C141.0 64 112 72 112 96 M190 74 C219.0 64 248 72 248 96 M170 91 C135.0 81 100 89 100 117 M190 91 C225.0 81 260 89 260 117 M170 108 C131.0 98 92 106 92 138 M190 108 C229.0 98 268 106 268 138 M170 125 C129.0 115 88 123 88 157 M190 125 C231.0 115 272 123 272 157 M170 142 C128.0 132 86 140 86 174 M190 142 C232.0 132 274 140 274 174 M170 159 C128.0 149 86 157 86 189 M190 159 C232.0 149 274 157 274 189 M170 176 C130.0 166 90 174 90 204 M190 176 C230.0 166 270 174 270 204 M170 193 C133.0 183 96 191 96 217 M190 193 C227.0 183 264 191 264 217 M170 210 C138.0 200 106 208 106 230 M190 210 C222.0 200 254 208 254 230 M170 227 C145.0 217 120 225 120 243 M190 227 C215.0 217 240 225 240 243" fill="none" stroke="var(--cream)" stroke-width="7" stroke-linecap="round"/><text x="120" y="268" text-anchor="middle" font-size="12" font-weight="700" style="paint-order:stroke;stroke:var(--surface);stroke-width:4">القفص الصدري</text></g>
+  <g class="hot" data-b="spine"><g fill="var(--cream)" stroke="var(--coral)" stroke-width="1.2"><rect x="171" y="40" width="18" height="11" rx="5"/><rect x="177" y="45" width="6" height="9" rx="3"/><rect x="171" y="54" width="18" height="11" rx="5"/><rect x="177" y="59" width="6" height="9" rx="3"/><rect x="171" y="68" width="18" height="11" rx="5"/><rect x="177" y="73" width="6" height="9" rx="3"/><rect x="171" y="82" width="18" height="11" rx="5"/><rect x="177" y="87" width="6" height="9" rx="3"/><rect x="171" y="96" width="18" height="11" rx="5"/><rect x="177" y="101" width="6" height="9" rx="3"/><rect x="171" y="110" width="18" height="11" rx="5"/><rect x="177" y="115" width="6" height="9" rx="3"/><rect x="171" y="124" width="18" height="11" rx="5"/><rect x="177" y="129" width="6" height="9" rx="3"/><rect x="171" y="138" width="18" height="11" rx="5"/><rect x="177" y="143" width="6" height="9" rx="3"/><rect x="171" y="152" width="18" height="11" rx="5"/><rect x="177" y="157" width="6" height="9" rx="3"/><rect x="171" y="166" width="18" height="11" rx="5"/><rect x="177" y="171" width="6" height="9" rx="3"/><rect x="171" y="180" width="18" height="11" rx="5"/><rect x="177" y="185" width="6" height="9" rx="3"/><rect x="171" y="194" width="18" height="11" rx="5"/><rect x="177" y="199" width="6" height="9" rx="3"/><rect x="171" y="208" width="18" height="11" rx="5"/><rect x="177" y="213" width="6" height="9" rx="3"/><rect x="171" y="222" width="18" height="11" rx="5"/><rect x="177" y="227" width="6" height="9" rx="3"/><rect x="171" y="236" width="18" height="11" rx="5"/><rect x="177" y="241" width="6" height="9" rx="3"/><rect x="171" y="250" width="18" height="11" rx="5"/><rect x="177" y="255" width="6" height="9" rx="3"/><rect x="171" y="264" width="18" height="11" rx="5"/><rect x="177" y="269" width="6" height="9" rx="3"/><rect x="171" y="278" width="18" height="11" rx="5"/><rect x="177" y="283" width="6" height="9" rx="3"/><rect x="171" y="292" width="18" height="11" rx="5"/><rect x="177" y="297" width="6" height="9" rx="3"/><rect x="171" y="306" width="18" height="11" rx="5"/><rect x="177" y="311" width="6" height="9" rx="3"/></g><path class="lead-line" d="M214 312 L192 306"/><text x="250" y="316" text-anchor="middle" font-size="12" font-weight="700" style="paint-order:stroke;stroke:var(--surface);stroke-width:4">العمود الفقري</text></g>
+  <g class="hot" data-b="scapula">
+    <path d="M86 84 C112 74 146 76 158 88 C154 122 138 170 122 204 C108 182 92 132 86 84 Z" fill="var(--blue)" stroke="var(--blue)" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M274 84 C248 74 214 76 202 88 C206 122 222 170 238 204 C252 182 268 132 274 84 Z" fill="var(--blue)" stroke="var(--blue)" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M78 98 C100 92 130 94 154 104 M282 98 C260 92 230 94 206 104" fill="none" stroke="var(--blue-soft)" stroke-width="5" stroke-linecap="round"/>
+    <path d="M112 120 C120 140 124 160 122 184 M248 120 C240 140 236 160 238 184" fill="none" stroke="var(--blue-soft)" stroke-width="2" opacity=".7"/>
+    <text x="122" y="226" text-anchor="middle" font-size="12" font-weight="700" style="paint-order:stroke;stroke:var(--surface);stroke-width:4">لوح الكتف</text>
+  </g>
+  <g class="hot" data-b="clavicle"><path d="M154 52 C130 50 104 58 80 78 M206 52 C230 50 256 58 280 78" fill="none" stroke="var(--cream)" stroke-width="8" stroke-linecap="round"/><text x="104" y="44" text-anchor="middle" font-size="12" font-weight="700" style="paint-order:stroke;stroke:var(--surface);stroke-width:4">الترقوة</text></g>
+</svg>
+      <p class="hint">اضغطي على أي عظمة • وهذي عظام ثانية بالجسم:</p>
+      <div class="row" style="justify-content:center"><button class="chip hot" data-b="skull">الجمجمة</button><button class="chip hot" data-b="forearm">الكعبرة والزند</button><button class="chip hot" data-b="hand">اليد</button><button class="chip hot" data-b="pelvis">الحوض</button><button class="chip hot" data-b="femur">الفخذ</button><button class="chip hot" data-b="patella">الرضفة</button><button class="chip hot" data-b="tibia">الساق</button><button class="chip hot" data-b="foot">القدم</button></div>
+    </div>
+    <div class="panel info" id="boneInfo" aria-live="polite"></div>
+  </div>
+
+  <h3 style="margin-top:26px">وظائف الهيكل العظمي</h3>
+  <div class="grid3">
+    <div class="card"><h3>🏛 الدعامة</h3><p>يعطي الجسم شكله ويحمل وزنه.</p></div>
+    <div class="card"><h3>🛡 الحماية</h3><p>الجمجمة تحمي الدماغ، والقفص الصدري يحمي القلب والرئتين.</p></div>
+    <div class="card"><h3>🦵 الحركة</h3><p>العظام روافع تشدها العضلات.</p></div>
+    <div class="card"><h3>🩸 صناعة الدم</h3><p>نخاع العظم الأحمر يصنع خلايا الدم.</p></div>
+    <div class="card"><h3>🧂 تخزين المعادن</h3><p>يخزن الكالسيوم والفوسفور.</p></div>
+    <div class="card"><h3>🧈 تخزين الدهون</h3><p>نخاع العظم الأصفر يخزن الدهون.</p></div>
+  </div>
+
+  <h3 style="margin-top:26px">أنواع العظام حسب الشكل</h3>
+  <div class="tablewrap"><table>
+    <tr><th>النوع</th><th>مثال</th></tr>
+    <tr><td>طويلة</td><td>عظم الفخذ، العضد</td></tr>
+    <tr><td>قصيرة</td><td>عظام الرسغ والكاحل</td></tr>
+    <tr><td>مسطحة</td><td>عظام الجمجمة، القص، الأضلاع</td></tr>
+    <tr><td>غير منتظمة</td><td>الفقرات</td></tr>
+    <tr><td>سمسمية</td><td>الرضفة (صابونة الركبة)</td></tr>
+  </table></div>
+
+  <h3 style="margin-top:26px">المفاصل: مكان التقاء عظمتين</h3>
+  <div class="grid2">
+    <div class="card"><h3>ثابتة</h3><p>لا تتحرك. مثال: الدروز بين عظام الجمجمة.</p></div>
+    <div class="card"><h3>قليلة الحركة</h3><p>حركة محدودة. مثال: بين الفقرات.</p></div>
+    <div class="card"><h3>حرة الحركة (زلالية)</h3>
+      <ul><li><b>كروية حُقّية:</b> حركة بكل الاتجاهات — الكتف والورك.</li><li><b>رزّية:</b> مثل مفصلة الباب — المرفق والركبة.</li><li><b>محورية:</b> دوران — بين الفقرتين الأولى والثانية في الرقبة.</li><li><b>انزلاقية:</b> انزلاق بسيط — الرسغ.</li></ul></div>
+    <div class="card"><h3>أجزاء تحمي المفصل</h3><ul><li><b>الغضروف:</b> يغطي أطراف العظام ويقلل الاحتكاك.</li><li><b>الأربطة:</b> تربط <b>عظمًا بعظم</b>.</li><li><b>السائل الزلالي:</b> يزيّت المفصل.</li></ul></div>
+  </div>
+</section>
+
+<!-- MUSCLES -->
+<section id="v-muscles" hidden>
+  <h2>الجهاز العضلي: أكثر من 600 عضلة</h2>
+  <p class="lead">العضلة تقدر <b>تنقبض</b> (تقصر وتسحب) لكن ما تقدر تدفع. لذلك العضلات الهيكلية تشتغل <b>أزواجًا متضادة</b>: وحدة تنقبض والثانية تنبسط.</p>
+  <div class="stage">
+    <div class="panel diagram">
+      <svg viewBox="0 0 360 320" role="img" aria-label="العضلة ذات الرأسين وذات الثلاثة رؤوس">
+  <path class="deco" d="M12 170 C0 70 110 6 190 18 C290 10 360 100 348 190 C336 270 250 318 165 312 C70 306 24 250 12 170Z" fill="var(--bg)"/>
+  <g class="deco"><circle cx="40" cy="46" r="14" fill="var(--red)"/><circle cx="40" cy="46" r="5.9" fill="var(--red-soft)"/><circle cx="84" cy="24" r="9" fill="var(--red)"/><circle cx="84" cy="24" r="3.8" fill="var(--red-soft)"/><circle cx="58" cy="92" r="10" fill="var(--red)"/><circle cx="58" cy="92" r="4.2" fill="var(--red-soft)"/><circle cx="250" cy="40" r="11" fill="var(--red)"/><circle cx="250" cy="40" r="4.6" fill="var(--red-soft)"/><circle cx="292" cy="62" r="7" fill="var(--red)"/><circle cx="292" cy="62" r="2.9" fill="var(--red-soft)"/><ellipse cx="22" cy="132" rx="9" ry="6" fill="var(--blue)" opacity=".8"/><ellipse cx="218" cy="70" rx="7" ry="5" fill="var(--blue)" opacity=".8"/></g>
+  <path d="M270 88 C320 70 352 90 360 110 V320 H262 C290 250 300 180 270 88Z" fill="var(--skin)"/>
+  <g transform="translate(150 232) rotate(-32.89)">
+    <rect x="-22" y="-40" width="209" height="80" rx="40" fill="var(--skin)"/>
+  </g>
+  <g id="forearm" style="transform-origin:150px 232px">
+    <g transform="translate(150 232) rotate(-100)">
+      <rect x="-20" y="-27" width="150" height="54" rx="27" fill="var(--skin)"/>
+      <g fill="var(--cream)" stroke="var(--blue)" stroke-width="2.5"><rect x="4" y="-15" width="112" height="10" rx="5"/><rect x="4" y="4" width="112" height="10" rx="5"/></g>
+      <ellipse cx="148" cy="0" rx="30" ry="28" fill="var(--skin)"/>
+      <g fill="var(--cream)" stroke="var(--blue)" stroke-width="2"><rect x="122" y="-14" width="12" height="10" rx="4"/><rect x="122" y="2" width="12" height="10" rx="4"/><rect x="138" y="-20" width="20" height="8" rx="4"/><rect x="138" y="-8" width="22" height="8" rx="4"/><rect x="138" y="4" width="22" height="8" rx="4"/><rect x="138" y="16" width="18" height="7" rx="3.5"/></g>
+      <path d="M166 -22 C176 -8 176 10 166 24" fill="none" stroke="var(--coral)" stroke-width="2.5" stroke-linecap="round"/>
+    </g>
+  </g>
+  <g transform="translate(150 232) rotate(-32.89)">
+    <g fill="var(--cream)" stroke="var(--blue)" stroke-width="2.5"><rect x="6" y="-6" width="149" height="12" rx="6"/><circle cx="6" cy="-6" r="8"/><circle cx="6" cy="7" r="8"/></g>
+    <g id="triceps"><path d="M18 8 C50 30 130 32 155 10 Z" fill="var(--muscle)" opacity=".7"/><path d="M40 14 C70 24 110 24 140 16 M60 10 C85 16 115 16 135 11" fill="none" stroke="var(--cream)" stroke-width="1.6" opacity=".8"/></g>
+    <g id="biceps"><path d="M12 -7 C40 -50 130 -52 155 -9 Z" fill="var(--muscle)"/><path d="M28 -12 C60 -36 115 -38 146 -14 M40 -10 C70 -26 110 -28 142 -11 M34 -16 C64 -44 110 -46 140 -20" fill="none" stroke="var(--cream)" stroke-width="1.8" opacity=".85"/><path d="M12 -7 L-8 -3" stroke="var(--cream)" stroke-width="4" stroke-linecap="round"/></g>
+  </g>
+  <circle cx="300" cy="135" r="30" fill="var(--blue)"/><path d="M284 118 C300 110 318 116 326 130" fill="none" stroke="var(--blue-soft)" stroke-width="5" stroke-linecap="round"/>
+  <text x="226" y="116" text-anchor="middle" font-size="12" font-weight="700" style="paint-order:stroke;stroke:var(--surface);stroke-width:4">ذات الرأسين</text>
+  <text x="262" y="256" text-anchor="middle" font-size="12" font-weight="700" style="paint-order:stroke;stroke:var(--surface);stroke-width:4">ذات الثلاثة رؤوس</text>
+  <text x="178" y="286" text-anchor="middle" font-size="12" font-weight="700" style="paint-order:stroke;stroke:var(--surface);stroke-width:4">المرفق</text>
+  <text x="318" y="88" text-anchor="middle" font-size="12" font-weight="700" style="paint-order:stroke;stroke:var(--surface);stroke-width:4">الكتف</text>
+</svg>
+      <label for="flex" style="display:block;margin-top:8px">حرّكي الذراع:</label>
+      <input type="range" id="flex" min="0" max="120" value="0" aria-label="ثني الذراع">
+      <div class="caption" id="flexCap"></div>
+    </div>
+    <div class="panel info">
+      <h3>كيف تتحرك العظام؟</h3>
+      <p>العضلة متصلة بالعظم عن طريق <b>الوتر</b>. لما تنقبض العضلة، تسحب الوتر فيتحرك العظم حول المفصل.</p>
+      <p class="tip">تذكري الفرق: <b>الوتر</b> = عضلة ← عظم &nbsp;|&nbsp; <b>الرباط</b> = عظم ← عظم</p>
+      <p style="margin-top:10px"><b>ثني الذراع:</b> ذات الرأسين تنقبض، ذات الثلاثة رؤوس تنبسط.</p>
+      <p><b>مد الذراع:</b> ذات الثلاثة رؤوس تنقبض، ذات الرأسين تنبسط.</p>
+      <p class="tip">نفس الفكرة في الرجل: العضلة الرباعية (أمام الفخذ) مع عضلات الفخذ الخلفية.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:26px">أنواع العضلات الثلاثة</h3>
+  <div class="grid3" id="mtypes"></div>
+
+  <div class="tablewrap"><table>
+    <tr><th>الصفة</th><th>هيكلية</th><th>قلبية</th><th>ملساء</th></tr>
+    <tr><td>التحكم</td><td>إرادية</td><td>لا إرادية</td><td>لا إرادية</td></tr>
+    <tr><td>الشكل تحت المجهر</td><td>مخططة</td><td>مخططة ومتفرعة</td><td>غير مخططة</td></tr>
+    <tr><td>عدد الأنوية</td><td>عدة أنوية</td><td>نواة واحدة (أو اثنتان)</td><td>نواة واحدة</td></tr>
+    <tr><td>التعب</td><td>تتعب بسرعة</td><td>لا تتعب</td><td>بطيئة التعب</td></tr>
+    <tr><td>المكان</td><td>متصلة بالعظام</td><td>جدار القلب فقط</td><td>جدران المعدة والأمعاء والأوعية</td></tr>
+  </table></div>
+
+  <div class="panel" style="margin-top:16px">
+    <h3>💡 كيف يتعاون الجهازان القلبي التنفسي والهيكلي العضلي؟</h3>
+    <p class="lead">لما تمارسين رياضة: العضلات تحتاج طاقة أكثر ← تحتاج O₂ أكثر ← يزيد معدل التنفس ومعدل نبض القلب عشان يوصل الدم المؤكسج أسرع للعضلات ويتخلص من CO₂. وعضلات التنفس نفسها (الحجاب الحاجز وعضلات الضلوع) هي عضلات هيكلية، والقفص الصدري العظمي يحمي القلب والرئتين.</p>
+  </div>
+</section>
+
+<!-- PLAY -->
+<section id="v-play" hidden>
+  <h2>العب واختبر نفسك</h2>
+  <p class="lead">ثلاث ألعاب سريعة. ابدئي بأي وحدة.</p>
+
+  <div class="panel game">
+    <h3>1) رتّبي رحلة الدم</h3>
+    <p class="lead">اضغطي على المحطات بالترتيب الصحيح، نبدأ من الجسم.</p>
+    <div class="chips" id="orderChips"></div>
+    <div class="path" id="orderPath"><span>الجسم</span></div>
+    <div class="flash" id="orderFlash"></div>
+    <div class="row"><button class="btn" id="orderReset">أعيدي اللعبة ↺</button></div>
+  </div>
+
+  <div class="panel game">
+    <h3>2) صنّفي بسرعة</h3>
+    <p class="lead">لأي جهاز ينتمي هذا الجزء؟</p>
+    <div class="score" id="sortScore"></div>
+    <div class="big-item" id="sortItem"></div>
+    <div class="bins" id="sortBins"></div>
+    <div class="flash" id="sortFlash"></div>
+  </div>
+
+  <div class="panel game">
+    <h3>3) الاختبار النهائي</h3>
+    <div class="score" id="qScore"></div>
+    <div class="bar"><div id="qBar" style="width:0"></div></div>
+    <p style="margin-top:12px;font-weight:700;font-size:1.05rem" id="qText"></p>
+    <div class="opts" id="qOpts"></div>
+    <p class="explain" id="qExp"></p>
+    <div class="row"><button class="btn primary" id="qNext" hidden>التالي ←</button></div>
+  </div>
+</section>
+</main>
+<footer class="wrap credits">
+  <h2>عمل الطالبات</h2>
+  <div class="team">
+    <div class="member"><svg viewBox="0 0 64 64" width="56" height="56" aria-hidden="true"><circle cx="32" cy="32" r="31" fill="var(--blue-soft)"/><path d="M17 30 C16 12 48 12 47 30 L48 42 C44 44 40 43 38 40 L26 40 C24 43 20 44 16 42Z" fill="#4a2e22"/><path d="M12 64 C14 50 22 46 32 46 C42 46 50 50 52 64Z" fill="var(--coral)"/><rect x="28" y="38" width="8" height="9" fill="#f6c3a8"/><ellipse cx="32" cy="30" rx="12" ry="13" fill="#f9d2bb"/><circle cx="27.5" cy="30" r="1.6" fill="#3c2c48"/><circle cx="36.5" cy="30" r="1.6" fill="#3c2c48"/><path d="M28.5 35 Q32 38 35.5 35" fill="none" stroke="#3c2c48" stroke-width="1.4" stroke-linecap="round"/><circle cx="25" cy="34" r="2" fill="#f4a0a0" opacity=".7"/><circle cx="39" cy="34" r="2" fill="#f4a0a0" opacity=".7"/><path d="M18 31 C16 10 48 10 46 31 C44 25 40 22 35 21 C29 23 23 24 18 31Z" fill="#4a2e22"/></svg><b>نورة الزهراني</b></div>
+    <div class="member"><svg viewBox="0 0 64 64" width="56" height="56" aria-hidden="true"><circle cx="32" cy="32" r="31" fill="var(--blue-soft)"/><path d="M18 28 C18 12 46 12 46 28 V54 H18Z" fill="#2b1d17"/><path d="M12 64 C14 50 22 46 32 46 C42 46 50 50 52 64Z" fill="var(--blue)"/><rect x="28" y="38" width="8" height="9" fill="#f6c3a8"/><ellipse cx="32" cy="30" rx="12" ry="13" fill="#f9d2bb"/><circle cx="27.5" cy="30" r="1.6" fill="#3c2c48"/><circle cx="36.5" cy="30" r="1.6" fill="#3c2c48"/><path d="M28.5 35 Q32 38 35.5 35" fill="none" stroke="#3c2c48" stroke-width="1.4" stroke-linecap="round"/><circle cx="25" cy="34" r="2" fill="#f4a0a0" opacity=".7"/><circle cx="39" cy="34" r="2" fill="#f4a0a0" opacity=".7"/><path d="M19 28 C20 15 44 15 45 28 C40 22 30 20 24 24 C22 26 20 27 19 28Z" fill="#2b1d17"/></svg><b>سلمى حسن</b></div>
+    <div class="member"><svg viewBox="0 0 64 64" width="56" height="56" aria-hidden="true"><circle cx="32" cy="32" r="31" fill="var(--blue-soft)"/><path d="M18 28 C18 12 46 12 46 28 C48 34 44 38 47 44 C42 46 40 42 38 40 L26 40 C24 42 22 46 17 44 C20 38 16 34 18 28Z" fill="#6b3f26"/><path d="M12 64 C14 50 22 46 32 46 C42 46 50 50 52 64Z" fill="var(--muscle)"/><rect x="28" y="38" width="8" height="9" fill="#f6c3a8"/><ellipse cx="32" cy="30" rx="12" ry="13" fill="#f9d2bb"/><circle cx="27.5" cy="30" r="1.6" fill="#3c2c48"/><circle cx="36.5" cy="30" r="1.6" fill="#3c2c48"/><path d="M28.5 35 Q32 38 35.5 35" fill="none" stroke="#3c2c48" stroke-width="1.4" stroke-linecap="round"/><circle cx="25" cy="34" r="2" fill="#f4a0a0" opacity=".7"/><circle cx="39" cy="34" r="2" fill="#f4a0a0" opacity=".7"/><path d="M19 29 C20 15 44 15 45 29 C41 23 37 25 33 21 C29 25 24 23 19 29Z" fill="#6b3f26"/></svg><b>غنى الجدعاني</b></div>
+  </div>
+  <p>الصف الثالث • موهبة</p>
+  <p>بإشراف المعلمة: <b>هدى الغامدي</b></p>
+  <p>العام ١٤٤٨هـ</p>
+</footer>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+
+/* tabs */
+const views=["heart","lungs","bones","muscles","play"];
+function route(){const v=views.includes(location.hash.slice(1))?location.hash.slice(1):"heart";
+  views.forEach(n=>{$("#v-"+n).hidden=n!==v});
+  $$(".tabs a").forEach(a=>a.setAttribute("aria-current",a.dataset.tab===v));}
+addEventListener("hashchange",()=>{route();scrollTo({top:$("nav").offsetTop,behavior:"smooth"})});route();
+
+function bindInfo(sel,attr,data,box,first){
+  const show=k=>{$$(sel).forEach(g=>{g.classList.toggle("on",g.dataset[attr]===k);(g.closest("svg")||g.parentElement).classList.add("has-sel")});
+    const d=data[k];$(box).innerHTML=`<h3>${d.t}${d.tag?` <span class="tag">${d.tag}</span>`:""}</h3><p>${d.d}</p>${d.tip?`<p class="tip">💡 ${d.tip}</p>`:""}`;};
+  $$(sel).forEach(g=>{g.setAttribute("tabindex","0");g.setAttribute("role","button");
+    g.addEventListener("click",()=>show(g.dataset[attr]));g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();show(g.dataset[attr])}})});
+  show(first);return show;}
+
+/* heart */
+const H={
+ ra:{t:"الأذين الأيمن",tag:"غير مؤكسج",d:"يستقبل الدم القادم من الجسم عن طريق الوريدين الأجوفين العلوي والسفلي، ثم يدفعه للبطين الأيمن.",tip:"فيه العقدة الجيبية الأذينية: منظم ضربات القلب الطبيعي."},
+ rv:{t:"البطين الأيمن",tag:"غير مؤكسج",d:"يضخ الدم إلى الرئتين عبر الشريان الرئوي ليأخذ الأكسجين.",tip:"جداره أرق من البطين الأيسر لأن الرئتين قريبتان."},
+ la:{t:"الأذين الأيسر",tag:"مؤكسج",d:"يستقبل الدم الغني بالأكسجين القادم من الرئتين عن طريق الأوردة الرئوية."},
+ lv:{t:"البطين الأيسر",tag:"مؤكسج",d:"يضخ الدم المؤكسج لكل الجسم عن طريق الأبهر.",tip:"أسمك جدار في القلب لأنه يضخ لمسافة أطول وبضغط أعلى."},
+ vc:{t:"الوريد الأجوف",tag:"وريد",d:"أكبر وريد في الجسم. العلوي يجمع الدم من الرأس والذراعين، والسفلي من باقي الجسم، ويصبّان في الأذين الأيمن."},
+ pa:{t:"الشريان الرئوي",tag:"استثناء",d:"ينقل الدم من البطين الأيمن إلى الرئتين.",tip:"الشريان الوحيد الذي يحمل دمًا غير مؤكسج."},
+ pv:{t:"الأوردة الرئوية",tag:"استثناء",d:"تنقل الدم المؤكسج من الرئتين إلى الأذين الأيسر (عددها 4).",tip:"الأوردة الوحيدة التي تحمل دمًا مؤكسجًا."},
+ ao:{t:"الأبهر (الأورطي)",tag:"أكبر شريان",d:"يخرج من البطين الأيسر ويتفرع ليوصل الدم المؤكسج لكل أعضاء الجسم."},
+ valves:{t:"الصمامات",tag:"4 صمامات",d:"تمنع رجوع الدم للخلف: <b>ثلاثي الشرفات</b> (بين الأذين والبطين الأيمن)، <b>التاجي / ثنائي الشرف</b> (بين الأذين والبطين الأيسر)، <b>الرئوي</b> (مخرج البطين الأيمن)، <b>الأبهري</b> (مخرج البطين الأيسر).",tip:"صوت القلب «لَب-دَب» هو صوت انغلاق الصمامات."}
+};
+const showH=bindInfo("#heartSvg .hot","h",H,"#heartInfo","lv");
+const tour=[["vc","الدم غير المؤكسج يرجع من الجسم عن طريق الوريد الأجوف…"],["ra","يدخل الأذين الأيمن…"],["valves","يعبر الصمام ثلاثي الشرفات…"],["rv","يصل البطين الأيمن فيضخه…"],["pa","في الشريان الرئوي إلى الرئتين، فيأخذ O₂ ويطلق CO₂."],["pv","يرجع مؤكسجًا عبر الأوردة الرئوية…"],["la","إلى الأذين الأيسر…"],["lv","ثم البطين الأيسر، أقوى غرفة…"],["ao","فيضخه في الأبهر إلى كل الجسم. ✅ انتهت الدورة!"]];
+let ti=-1,timer=null;
+function tourStep(){ti=(ti+1)%tour.length;showH(tour[ti][0]);$("#tourCap").textContent=`${ti+1}. ${tour[ti][1]}`;if(ti===tour.length-1){clearInterval(timer);timer=null;$("#tourBtn").textContent="أعيدي الرحلة ▶"}}
+$("#tourBtn").onclick=()=>{clearInterval(timer);ti=-1;tourStep();timer=setInterval(tourStep,2400);$("#tourBtn").textContent="جارٍ التشغيل…"};
+$("#tourStep").onclick=()=>{clearInterval(timer);timer=null;tourStep()};
+
+const hr=$("#hr");function upHR(){const v=+hr.value;$("#hrVal").textContent=v;$("#co").textContent=(v*70/1000).toFixed(1);
+ $("#hrNote").textContent=v<60?"نبض منخفض (مثل الرياضيين وقت الراحة)":v<=100?"نبض طبيعي وقت الراحة (60–100)":"نبض مرتفع، مثل وقت التمرين — القلب يضخ دم أكثر للعضلات";
+ $(".beat").style.animationDuration=(60/v)+"s";}
+hr.oninput=upHR;upHR();
+
+/* lungs */
+const L={
+ nose:{t:"الأنف والفم",d:"مدخل الهواء. الشعر والمخاط في الأنف ينقيان الهواء، ويتم تدفئته وترطيبه قبل ما يوصل للرئتين."},
+ pharynx:{t:"البلعوم",d:"ممر مشترك للهواء والطعام.",tip:"لسان المزمار يغلق الحنجرة وقت البلع عشان ما يدخل الأكل للقصبة."},
+ larynx:{t:"الحنجرة",d:"صندوق الصوت، فيها الأحبال الصوتية التي تهتز ليخرج الصوت."},
+ trachea:{t:"القصبة الهوائية",d:"أنبوب يوصل الهواء للصدر. تدعمها حلقات غضروفية على شكل حرف C تبقيها مفتوحة.",tip:"مبطنة بأهداب تطرد المخاط والغبار لفوق."},
+ bronchi:{t:"الشعب والشعيبات الهوائية",d:"القصبة تتفرع إلى شعبتين (يمنى ويسرى)، وكل شعبة تتفرع لشعيبات أصغر فأصغر مثل أغصان الشجرة."},
+ alveoli:{t:"الحويصلات الهوائية",tag:"تبادل الغازات",d:"أكياس هوائية صغيرة جدًا في نهاية الشعيبات، محاطة بشعيرات دموية. هنا ينتقل O₂ للدم وCO₂ للهواء.",tip:"في الرئتين حوالي 300–500 مليون حويصلة!"},
+ lungs:{t:"الرئتان",d:"عضوان إسفنجيان داخل القفص الصدري. الرئة اليمنى 3 فصوص، واليسرى فصّان (لترك مكان للقلب)."},
+ diaphragm:{t:"الحجاب الحاجز",tag:"عضلة",d:"عضلة على شكل قبة تفصل الصدر عن البطن، وهي العضلة الأساسية للتنفس."}
+};
+bindInfo("#lungWrap .hot","l",L,"#lungInfo","alveoli");
+let inh=false;$("#breathBtn").onclick=()=>{inh=!inh;$("#lungWrap").classList.toggle("inhale",inh);
+ $("#breathBtn").textContent=inh?"أخرجي النَّفَس 💨":"خذي نَفَس 🌬";
+ $("#breathCap").textContent=inh?"شهيق: الحجاب الحاجز ينقبض وينزل، الصدر يكبر، الضغط يقل، والهواء يدخل.":"زفير: الحجاب الحاجز ينبسط ويرتفع، الصدر يصغر، الضغط يزيد، والهواء يطلع.";};
+
+/* bones */
+const B={
+ skull:{t:"الجمجمة",tag:"محوري",d:"تتكون من 22 عظمة، تحمي الدماغ. عظامها متصلة بمفاصل ثابتة (دروز). الفك السفلي هو العظم الوحيد المتحرك فيها."},
+ spine:{t:"العمود الفقري",tag:"محوري",d:"33 فقرة (بعضها يلتحم عند البالغين). يحمي الحبل الشوكي ويدعم الجسم.",tip:"بين الفقرات أقراص غضروفية تمتص الصدمات."},
+ scapula:{t:"لوح الكتف",tag:"عظم مسطح",d:"عظم مثلث الشكل في أعلى الظهر. يتصل بالعضد عند مفصل الكتف (كروي حُقّي) وبالترقوة، وتتصل به عضلات كثيرة تحرك الذراع."},
+ clavicle:{t:"الترقوة",tag:"طرفي",d:"عظمة الكتف الأمامية، تربط الذراع بالقص. جزء من الحزام الكتفي مع لوح الكتف."},
+ ribs:{t:"القفص الصدري",tag:"محوري",d:"12 زوجًا من الأضلاع + عظم القص. يحمي القلب والرئتين ويساعد في التنفس."},
+ humerus:{t:"العضد",tag:"عظم طويل",d:"عظم الجزء العلوي من الذراع، بين الكتف والمرفق."},
+ forearm:{t:"الكعبرة والزند",tag:"طرفي",d:"عظمتا الساعد. الكعبرة في جهة الإبهام، والزند في جهة الخنصر."},
+ hand:{t:"عظام اليد",tag:"27 عظمة",d:"الرسغ (8 عظام قصيرة) + المشط (5) + السلاميات (14). تسمح بحركات دقيقة جدًا."},
+ pelvis:{t:"الحوض",tag:"طرفي",d:"يربط العمود الفقري بالرجلين، ويحمي أعضاء أسفل البطن، ويحمل وزن الجزء العلوي من الجسم."},
+ femur:{t:"عظم الفخذ",tag:"الأطول",d:"أطول وأقوى عظم في الجسم. يتصل بالحوض بمفصل كروي حُقّي (الورك).",tip:"أصغر عظمة في الجسم هي الركاب في الأذن الوسطى."},
+ patella:{t:"الرضفة (صابونة الركبة)",tag:"سمسمية",d:"عظمة صغيرة داخل وتر عضلة الفخذ، تحمي مفصل الركبة."},
+ tibia:{t:"الظنبوب والشظية",tag:"طرفي",d:"عظمتا الساق. الظنبوب (القصبة) هو الأكبر ويحمل الوزن، والشظية رفيعة على الجانب الخارجي."},
+ foot:{t:"عظام القدم",tag:"26 عظمة",d:"الكاحل (7) + المشط (5) + السلاميات (14). تحمل وزن الجسم كاملًا."}
+};
+bindInfo("#skelWrap .hot","b",B,"#boneInfo","scapula");
+
+/* muscles */
+const flex=$("#flex");function upFlex(){const a=+flex.value;const k=a/120;$("#forearm").style.transform=`rotate(${-(1-k)*70}deg)`;
+ $("#biceps").setAttribute("transform",`translate(80 -7) scale(${1-k*.15} ${.8+k*.55}) translate(-80 7)`);$("#triceps").setAttribute("transform",`translate(80 7) scale(${1+k*.05} ${1.1-k*.4}) translate(-80 -7)`);
+ $("#flexCap").textContent=a<15?"الذراع ممدودة: ذات الثلاثة رؤوس منقبضة، ذات الرأسين منبسطة.":a>95?"الذراع مثنية بالكامل: ذات الرأسين منقبضة (قصيرة وسميكة)، ذات الثلاثة رؤوس منبسطة.":"أثناء الثني: ذات الرأسين تنقبض وتسحب الساعد لفوق.";}
+flex.oninput=upFlex;upFlex();
+const MT=[["الهيكلية","var(--muscle)","إرادية • مخططة • متصلة بالعظام بالأوتار","مثل: عضلة الذراع، عضلات الفخذ، الحجاب الحاجز"],
+ ["القلبية","var(--red)","لا إرادية • مخططة ومتفرعة • لا تتعب","موجودة في جدار القلب فقط"],
+ ["الملساء","var(--blue)","لا إرادية • غير مخططة • انقباضها بطيء","جدران المعدة والأمعاء والأوعية الدموية والمثانة"]];
+$("#mtypes").innerHTML=MT.map(([n,c,a,b])=>`<div class="card"><h3><span class="sw" style="background:${c}"></span>${n}</h3><p>${a}</p><p style="color:var(--muted);margin-top:6px">${b}</p></div>`).join("");
+
+/* game 1 */
+const ORDER=["الوريد الأجوف","الأذين الأيمن","البطين الأيمن","الشريان الرئوي","الرئتان","الأوردة الرئوية","الأذين الأيسر","البطين الأيسر","الأبهر"];
+let oi=0,mist=0;
+function orderInit(){oi=0;mist=0;$("#orderPath").innerHTML="<span>الجسم</span>";$("#orderFlash").textContent="";$("#orderFlash").className="flash";
+ $("#orderChips").innerHTML="";shuffle(ORDER).forEach(n=>{const b=document.createElement("button");b.className="chip";b.textContent=n;
+  b.onclick=()=>{if(b.classList.contains("done"))return;if(n===ORDER[oi]){b.classList.add("done");oi++;$("#orderPath").insertAdjacentHTML("beforeend",`<i>←</i><span>${n}</span>`);
+   if(oi===ORDER.length){$("#orderPath").insertAdjacentHTML("beforeend",`<i>←</i><span>الجسم</span>`);$("#orderFlash").className="flash ok";$("#orderFlash").textContent=mist?`أحسنتِ! خلصتيها بـ${mist} أخطاء 👏`:"ممتاز! بدون ولا غلطة 🏆";}
+   else{$("#orderFlash").className="flash ok";$("#orderFlash").textContent="صح ✓";}}
+  else{mist++;b.classList.remove("shake");void b.offsetWidth;b.classList.add("shake");$("#orderFlash").className="flash no";$("#orderFlash").textContent="لا، فكّري: وين يروح الدم بعد "+(oi?ORDER[oi-1]:"الجسم")+"؟";}};
+  $("#orderChips").appendChild(b)});}
+$("#orderReset").onclick=orderInit;orderInit();
+
+/* game 2 */
+const SYS=["الدوري (القلب والدم)","التنفسي","الهيكلي","العضلي"];
+const ITEMS=[["البطين الأيسر",0],["الصفائح الدموية",0],["الشعيرات الدموية",0],["الأبهر",0],["الحويصلات الهوائية",1],["القصبة الهوائية",1],["الحنجرة",1],["الشعب الهوائية",1],["الرضفة",2],["الفقرات",2],["الأربطة",2],["نخاع العظم",2],["الأوتار",3],["ذات الرأسين",3],["العضلة الملساء",3],["الحجاب الحاجز",3]];
+let sq=[],si=0,sc=0;
+function sortInit(){sq=shuffle(ITEMS);si=0;sc=0;sortShow();}
+function sortShow(){if(si>=sq.length){$("#sortItem").textContent=`النتيجة: ${sc} من ${sq.length} 🎉`;$("#sortBins").innerHTML=`<button class="btn primary" style="grid-column:1/-1">العبي مرة ثانية</button>`;$("#sortBins").firstChild.onclick=sortInit;$("#sortFlash").textContent="";$("#sortScore").textContent="";return;}
+ $("#sortScore").textContent=`${si+1} من ${sq.length} • الصح: ${sc}`;$("#sortItem").textContent=sq[si][0];
+ $("#sortBins").innerHTML=SYS.map((s,i)=>`<button class="btn" data-i="${i}">${s}</button>`).join("");
+ $$("#sortBins .btn").forEach(b=>b.onclick=()=>{const ok=+b.dataset.i===sq[si][1];if(ok)sc++;
+  $("#sortFlash").className="flash "+(ok?"ok":"no");$("#sortFlash").textContent=ok?"صح ✓":`خطأ — ${sq[si][0]} من الجهاز ${SYS[sq[si][1]]}`;
+  $$("#sortBins .btn").forEach(x=>x.disabled=true);setTimeout(()=>{si++;sortShow()},ok?600:1500);});}
+sortInit();
+
+/* game 3 quiz */
+const Q=[
+ ["أي غرفة في القلب لها أسمك جدار؟",["الأذين الأيمن","البطين الأيمن","البطين الأيسر","الأذين الأيسر"],2,"البطين الأيسر يضخ الدم لكل الجسم فيحتاج قوة أكبر."],
+ ["الشريان الوحيد الذي يحمل دمًا غير مؤكسج هو:",["الأبهر","الشريان الرئوي","الشريان التاجي","الشريان السباتي"],1,"الشريان الرئوي ينقل الدم من القلب للرئتين ليتأكسج."],
+ ["أين يحدث تبادل الغازات في الرئتين؟",["القصبة الهوائية","الحنجرة","الحويصلات الهوائية","الشعب الهوائية"],2,"الحويصلات جدرانها رقيقة ومحاطة بشعيرات دموية."],
+ ["ماذا يحدث للحجاب الحاجز أثناء الشهيق؟",["ينبسط ويرتفع","ينقبض وينزل","لا يتغير","ينقبض ويرتفع"],1,"انقباضه ونزوله يكبّر حجم الصدر فيقل الضغط ويدخل الهواء."],
+ ["كم عدد العظام في جسم الإنسان البالغ؟",["106","206","306","600"],1,"206 عظمة: 80 محورية و126 طرفية."],
+ ["أطول عظم في الجسم:",["الظنبوب","العضد","عظم الفخذ","الزند"],2,"عظم الفخذ أطول وأقوى عظم."],
+ ["ما الذي يربط العضلة بالعظم؟",["الرباط","الوتر","الغضروف","السائل الزلالي"],1,"الوتر: عضلة ← عظم. الرباط: عظم ← عظم."],
+ ["مفصل الكتف من نوع:",["رزّي","محوري","كروي حُقّي","ثابت"],2,"الكروي الحُقّي يسمح بالحركة في كل الاتجاهات."],
+ ["العضلة القلبية:",["إرادية ومخططة","لا إرادية ومخططة","لا إرادية وغير مخططة","إرادية وغير مخططة"],1,"القلبية مخططة لكنها لا إرادية ولا تتعب."],
+ ["عند ثني الذراع تنقبض العضلة:",["ذات الثلاثة رؤوس","ذات الرأسين","الرباعية","الدالية"],1,"ذات الرأسين تنقبض وذات الثلاثة رؤوس تنبسط — زوج متضاد."],
+ ["أي خلايا الدم تنقل الأكسجين؟",["البيضاء","الصفائح","الحمراء","البلازما"],2,"كريات الدم الحمراء فيها الهيموغلوبين الذي يرتبط بالأكسجين."],
+ ["أين تُصنع خلايا الدم؟",["الكبد","نخاع العظم الأحمر","القلب","الرئتين"],1,"نخاع العظم الأحمر داخل العظام يصنع خلايا الدم."],
+ ["الأوعية التي فيها صمامات تمنع رجوع الدم:",["الشرايين","الأوردة","الشعيرات","كلها"],1,"ضغط الدم في الأوردة منخفض، فالصمامات تمنع رجوعه."],
+ ["الصمام بين الأذين الأيسر والبطين الأيسر:",["ثلاثي الشرفات","الرئوي","التاجي","الأبهري"],2,"التاجي ويسمى أيضًا ثنائي الشرف."],
+ ["العضلات الملساء توجد في:",["جدار المعدة","الفخذ","جدار القلب","الذراع"],0,"الملساء في جدران الأعضاء الداخلية والأوعية."]
+];
+let qs=[],qi=0,qc=0,best=0;try{best=+localStorage.getItem("bodyBest")||0}catch(e){}
+function qInit(){qs=shuffle(Q).slice(0,10);qi=0;qc=0;qShow();}
+function qShow(){$("#qNext").hidden=true;$("#qExp").textContent="";
+ if(qi>=qs.length){if(qc>best){best=qc;try{localStorage.setItem("bodyBest",best)}catch(e){}}
+  $("#qText").textContent=`خلصتِ! نتيجتك ${qc} من ${qs.length} ${qc>=9?"🏆 ممتازة!":qc>=7?"👏 رائع":"💪 راجعي وجربي مرة ثانية"}`;
+  $("#qOpts").innerHTML=`<button class="btn primary">اختبار جديد</button>`;$("#qOpts").firstChild.onclick=qInit;$("#qBar").style.width="100%";$("#qScore").textContent=`أفضل نتيجة: ${best}`;return;}
+ const [t,o,a,x]=qs[qi];$("#qScore").textContent=`سؤال ${qi+1} من ${qs.length} • الصح: ${qc}${best?` • أفضل نتيجة: ${best}`:""}`;$("#qBar").style.width=(qi/qs.length*100)+"%";
+ $("#qText").textContent=t;$("#qOpts").innerHTML=o.map((s,i)=>`<button class="opt" data-i="${i}">${s}</button>`).join("");
+ $$("#qOpts .opt").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;$$("#qOpts .opt").forEach(z=>{z.disabled=true;if(+z.dataset.i===a)z.classList.add("right")});
+  if(i===a)qc++;else b.classList.add("wrong");$("#qExp").textContent=(i===a?"✓ صح. ":"✗ ")+x;$("#qNext").hidden=false;$("#qNext").focus();});}
+$("#qNext").onclick=()=>{qi++;qShow()};qInit();
+</script>
+
+</body></html>
